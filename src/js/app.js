@@ -1,6 +1,11 @@
+var currentUser=AV.User.current()||{id:'',attributes:{email:''}}
 var vm=new Vue({
     el:'#app',
     data:{
+        currentUser:{
+            id:currentUser.id,
+            email:currentUser.attributes.email
+        },
         resume: {
             name: '高圆圆',
             gender: '女',
@@ -40,11 +45,15 @@ var vm=new Vue({
         },
         onLogout(){
             AV.User.logOut();
+            this.currentUser.id=''
+            this.currentUser.email=''
             alert('注销成功');
         },
         onLogin(){
             AV.User.logIn(this.login.email, this.login.password).then((loginedUser)=> {
                 this.loginVisible=false;
+                this.currentUser.id=loginedUser.id
+                this.currentUser.email=loginedUser.attributes.email;
             }, (error)=> {
                 if(error.code===216){
                     this.login.responseMessage='你的邮箱还未验证，请检查邮件'
@@ -117,6 +126,5 @@ var vm=new Vue({
                 console.log(error);
             });
         }
-
     }
 })

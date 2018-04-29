@@ -20,11 +20,11 @@
             </ul>
         </div>
         <div class="down">
-            <button @click="onLogout" class="button">登出</button>
+            <button v-if="currentUser.id" @click="onLogout" class="button">登出</button>
         </div>
     </aside>
     <main>
-        {{resume}}
+        <div class="welcome">欢迎你  {{currentUser.email}}</div>
         <div class="resume">
             <h1>
                 <editable-span @edit="onEdit('name',$event)" :value="resume.name"></editable-span>
