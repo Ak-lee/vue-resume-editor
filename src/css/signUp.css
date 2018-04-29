@@ -10,6 +10,9 @@ button{
     background-color: transparent;
     padding: 10px;
 }
+.row{
+    margin:20px 0;
+}
 .signUp{
     position:fixed;
     top:50%;
@@ -26,6 +29,7 @@ button{
     margin:15px;
     padding:15px;
     border:1px solid #aaa;
+    position:relative;
 }
 .signUp .title{
     display:flex;
@@ -35,11 +39,11 @@ button{
     color:#666;
     margin-left: 10px;
 }
-.closeBtn{
-    border:none;
-    background-color:transparent;
-    position:absolute;
-    display:block;
-    top:0;
-    right:0;
+.closeBtn {
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
 }

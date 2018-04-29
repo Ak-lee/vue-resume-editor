@@ -20,7 +20,7 @@
             </ul>
         </div>
         <div class="down">
-            <button class="button">登出</button>
+            <button @click="onLogout" class="button">登出</button>
         </div>
     </aside>
     <main>
@@ -119,7 +119,7 @@
             </section>
         </div>
     </main>
-    <div v-show="loginVisible" class="login">
+    <div v-show="loginVisible" v-cloak class="login">
         <form @submit.prevent="onLogin" >
             <div class="title">
                 <h2>登录</h2>
@@ -146,7 +146,7 @@
             <button type="button" v-if="login.verifyEmailBtnVisible" @click="verifyEmail">发送验证邮件</button>
         </form>
     </div>
-    <div  v-show="signUpVisible" class="signUp">
+    <div  v-show="signUpVisible" v-cloak class="signUp">
         <form @submit.prevent="onSignUp">
             <div class="title">
                 <h2>注册</h2>

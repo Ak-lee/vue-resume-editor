@@ -51,6 +51,6 @@ button[type=submit]{
 }
 .resetPassword{
     border:none;
-    padding:none;
+    padding:0;
     color:red;
 }

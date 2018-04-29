@@ -15,6 +15,9 @@ a {
 ul, ol {
     list-style: none;
 }
+div[v-cloak]{
+    display:none;
+}
 
 @media (min-width: 500px) {
     /*pc上使用*/

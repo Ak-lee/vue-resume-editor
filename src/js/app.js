@@ -38,9 +38,13 @@ var vm=new Vue({
                 this.saveResume()
             }
         },
+        onLogout(){
+            AV.User.logOut();
+            alert('注销成功');
+        },
         onLogin(){
             AV.User.logIn(this.login.email, this.login.password).then((loginedUser)=> {
-                console.log(loginedUser);
+                this.loginVisible=false;
             }, (error)=> {
                 if(error.code===216){
                     this.login.responseMessage='你的邮箱还未验证，请检查邮件'
@@ -75,9 +79,13 @@ var vm=new Vue({
         },
         showLogin(){
             this.loginVisible=true;
+            this.resetStatus()
         },
         saveResume(){
-
+            let {id} = AV.User.current()
+            let user = AV.Object.createWithoutData('User', id)
+            user.set('resume', this.resume)
+            user.save()
         },
         verifyEmail(){
             AV.User.requestEmailVerify(this.login.email).then((result)=>{
@@ -88,6 +96,16 @@ var vm=new Vue({
                     this.login.responseMessage='操作频繁，请稍后重试'
                 }
             });
+        },
+        resetStatus(){
+            this.signUp.email=''
+            this.signUp.password=''
+            this.signUp.responseMessage=''
+            this.login.email=''
+            this.login.password=''
+            this.login.responseMessage=''
+            this.login.verifyEmailBtnVisible=false;
+            this.login.resetPasswordVisible=false;
         },
         resetPassword(){
             AV.User.requestPasswordReset(this.login.email).then((success)=> {
