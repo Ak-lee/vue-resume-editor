@@ -1,0 +1,45 @@
+.icon {
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+button{
+    font-size: 16px;
+    border:1px solid #aaa;
+    background-color: transparent;
+    padding: 10px;
+}
+.signUp{
+    position:fixed;
+    top:50%;
+    left:50%;
+    width:400px;
+    background-color: #dddddd;
+    transform: translate(-50%,-50%);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.signUp>form{
+    width:100%;
+    margin:15px;
+    padding:15px;
+    border:1px solid #aaa;
+}
+.signUp .title{
+    display:flex;
+    align-items: flex-end;
+}
+.signUp .title>span{
+    color:#666;
+    margin-left: 10px;
+}
+.closeBtn{
+    border:none;
+    background-color:transparent;
+    position:absolute;
+    display:block;
+    top:0;
+    right:0;
+}

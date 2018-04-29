@@ -3,7 +3,7 @@ Vue.component('editableSpan',{
     template:`
             <span class="editableSpan">
                 <span v-show="!editing">{{value}}</span>
-                <input type="text" v-show="editing" v-bind:value="value" @input="triggerEdit" >
+                <input type="text" v-show="editing" v-bind:value="value" @blur="outFocus" @input="triggerEdit" >
                 <button @click="editing=!editing">{{editing?'保存':'编辑'}}</button>
             </span>
         `,
@@ -16,6 +16,9 @@ Vue.component('editableSpan',{
     methods:{
         triggerEdit(e){
             this.$emit('edit',e.target.value)
+        },
+        outFocus(){
+            this.editing=false;
         }
     }
 })

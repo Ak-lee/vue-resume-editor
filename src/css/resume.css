@@ -17,7 +17,9 @@ main > .resume h2 {
     text-align: center;
     margin: 20px;
 }
-
+main>.resume .jobTitle{
+    text-align:center;
+}
 main > .resume .profile {
     text-align: center;
 }

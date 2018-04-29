@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>简历编辑器</title>
     <link href="css/index.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/resume.css">
     <link rel="stylesheet" href="css/editable-span.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/signUp.css">
 </head>
 <body>
 <div class="page" id="app">
     <aside>
         <div class="upper">
             <ul class="action">
-                <li><button class="button">保存</button></li>
+                <li><button @click="onClickSave" class="button">保存</button></li>
                 <li><button class="button">分享</button></li>
                 <li><button class="button">打印</button></li>
                 <li><button class="button">换肤</button></li>
@@ -23,11 +24,15 @@
         </div>
     </aside>
     <main>
+        {{resume}}
         <div class="resume">
             <h1>
-                <editable-span @output="onEdit('name',$event)" v-bind:value="resume.name"></editable-span>
+                <editable-span @edit="onEdit('name',$event)" :value="resume.name"></editable-span>
             </h1>
             <section>
+                <p class="jobTitle">应聘职位：
+                    <editable-span @edit="onEdit('jobTitle',$event)" :value="resume.jobTitle"></editable-span>
+                </p>
                 <p class="profile">
                     <editable-span :value="resume.birthday" @edit="onEdit('birthday',$event)"></editable-span>
                     |
@@ -36,8 +41,6 @@
                     <editable-span :value="resume.email" @edit="onEdit('email', $event)"></editable-span>
                     |
                     <editable-span :value="resume.phone" @edit="onEdit('phone', $event)"></editable-span>
-
-                        出生年月 | 应聘职位 | 性别 | 邮箱 | 手机
                 </p>
             </section>
             <section class="skills">
@@ -116,11 +119,65 @@
             </section>
         </div>
     </main>
+    <div v-show="loginVisible" class="login">
+        <form @submit.prevent="onLogin" >
+            <div class="title">
+                <h2>登录</h2>
+                <span @click="signUpVisible=true; loginVisible=false;">| 注册</span>
+            </div>
+            <button class="closeBtn" type="button" @click="loginVisible=false">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-Close"></use>
+                </svg>
+            </button>
+            <div class="row">
+                <label>邮箱</label>
+                <input type="text" v-model="login.email">
+            </div>
+            <div class="row">
+                <label>密码</label>
+                <input type="password" v-model="login.password">
+            </div>
+            <div class="action">
+                <button type="submit">提交</button>
+                <button class="resetPassword" v-if="login.resetPasswordVisible" @click="resetPassword" type="button">忘记密码?</button>
+            </div>
+            <div class="message" v-html="login.responseMessage"></div>
+            <button type="button" v-if="login.verifyEmailBtnVisible" @click="verifyEmail">发送验证邮件</button>
+        </form>
+    </div>
+    <div  v-show="signUpVisible" class="signUp">
+        <form @submit.prevent="onSignUp">
+            <div class="title">
+                <h2>注册</h2>
+                <span @click="signUpVisible=false; loginVisible=true;">| 登录</span>
+            </div>
+            <button class="closeBtn" @click="signUpVisible=false">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-Close"></use>
+                </svg>
+            </button>
+            <div class="row">
+                <label>邮箱</label>
+                <input  v-model="signUp.email" type="text">
+            </div>
+            <div class="row">
+                <label>密码</label>
+                <input v-model="signUp.password" type="password">
+            </div>
+            <div class="action">
+                <button type="submit">提交</button>
+            </div>
+            <div class="message">{{signUp.responseMessage}}</div>
+        </form>
+    </div>
 </div>
+<script src="//at.alicdn.com/t/font_648255_iudnkr9ybck57b9.js"></script>
 <script src="../vendors/av-min.js"></script>
 <script src="js/av.js" ></script>
 <script src="../vendors/vue.js"></script>
 <script src="./js/editSpan.js"></script>
 <script src="./js/app.js"></script>
+
 </body>
 </html>
