@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0255268e-1bf5-4230-9517-cbec4815b5e7" name="Default" comment="添加 login.css">
-      <change beforePath="$PROJECT_DIR$/src/css/editable-span.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/editable-span.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/editSpan.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/editSpan.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -52,8 +50,20 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-528">
-              <caret line="63" column="25" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
+            <state relative-caret-position="293">
+              <caret line="110" column="27" selection-start-line="110" selection-start-column="27" selection-end-line="110" selection-end-column="27" />
+              <folding>
+                <element signature="e#731#778#0" />
+                <element signature="e#801#1016#0" />
+                <element signature="e#1036#1177#0" />
+                <element signature="e#1196#1933#0" />
+                <element signature="e#1953#2794#0" />
+                <element signature="e#2815#2893#0" />
+                <element signature="e#3121#3474#0" />
+                <element signature="e#3497#3832#0" />
+                <element signature="e#3857#4194#0" />
+                <element signature="e#3935#4005#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -105,7 +115,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="90" />
     <option name="y" value="13" />
     <option name="width" value="1264" />
@@ -205,12 +215,12 @@
       <workItem from="1524922414663" duration="5148000" />
       <workItem from="1524929236610" duration="729000" />
       <workItem from="1524967306859" duration="17670000" />
-      <workItem from="1525004702094" duration="5181000" />
+      <workItem from="1525004702094" duration="6650000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63154000" />
+    <option name="totallyTimeSpent" value="64623000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -283,6 +293,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1276">
           <caret line="58" column="56" selection-start-line="58" selection-start-column="56" selection-end-line="58" selection-end-column="56" />
+          <folding>
+            <element signature="e#731#778#0" />
+            <element signature="e#801#1016#0" />
+            <element signature="e#1036#1177#0" />
+            <element signature="e#1196#1933#0" />
+            <element signature="e#1953#2794#0" />
+            <element signature="e#2815#2893#0" />
+            <element signature="e#3121#3474#0" />
+            <element signature="e#3497#3832#0" />
+            <element signature="e#3857#4194#0" />
+            <element signature="e#3935#4005#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -471,8 +493,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-528">
-          <caret line="63" column="25" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
+        <state relative-caret-position="293">
+          <caret line="110" column="27" selection-start-line="110" selection-start-column="27" selection-end-line="110" selection-end-column="27" />
+          <folding>
+            <element signature="e#731#778#0" />
+            <element signature="e#801#1016#0" />
+            <element signature="e#1036#1177#0" />
+            <element signature="e#1196#1933#0" />
+            <element signature="e#1953#2794#0" />
+            <element signature="e#2815#2893#0" />
+            <element signature="e#3121#3474#0" />
+            <element signature="e#3497#3832#0" />
+            <element signature="e#3857#4194#0" />
+            <element signature="e#3935#4005#0" />
+          </folding>
         </state>
       </provider>
     </entry>

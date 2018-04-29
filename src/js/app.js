@@ -105,7 +105,22 @@ var vm=new Vue({
             let {id} = AV.User.current()
             let user = AV.Object.createWithoutData('User', id)
             user.set('resume', this.resume)
-            user.save()
+            user.save().then((success)=>{
+                alert('保存成功')
+            },(error)=>{
+                alert('保存失败')
+            })
+        },
+        getResume(){
+            var query = new AV.Query('User');
+            query.get(this.currentUser.id).then((user)=> {
+                // 成功获得实例
+                console.log(user)
+                this.resume=Object.assign({},user.attributes.resume);
+            }, (error)=> {
+                // 异常处理
+                console.log(error);
+            });
         },
         verifyEmail(){
             AV.User.requestEmailVerify(this.login.email).then((result)=>{
@@ -139,3 +154,9 @@ var vm=new Vue({
         }
     }
 })
+let currentUser=AV.User.current()
+if(!!currentUser){
+    vm.currentUser.id=currentUser.id;
+    vm.currentUser.email=currentUser.attributes.email;
+    vm.getResume()
+}
