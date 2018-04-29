@@ -143,7 +143,7 @@
                 <button class="resetPassword" v-if="login.resetPasswordVisible" @click="resetPassword" type="button">忘记密码?</button>
             </div>
             <div class="message" v-html="login.responseMessage"></div>
-            <button type="button" v-if="login.verifyEmailBtnVisible" @click="verifyEmail">发送验证邮件</button>
+            <button class="sendEmailBtn" type="button" v-if="login.verifyEmailBtnVisible" @click="verifyEmail">发送邮件</button>
         </form>
     </div>
     <div  v-show="signUpVisible" v-cloak class="signUp">

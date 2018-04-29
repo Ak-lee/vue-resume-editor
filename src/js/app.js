@@ -1,10 +1,9 @@
-var currentUser=AV.User.current()||{id:'',attributes:{email:''}}
 var vm=new Vue({
     el:'#app',
     data:{
         currentUser:{
-            id:currentUser.id,
-            email:currentUser.attributes.email
+            id:'',
+            email:''
         },
         resume: {
             name: '高圆圆',
@@ -77,7 +76,10 @@ var vm=new Vue({
             user.setEmail(this.signUp.email);
             user.signUp().then((loginedUser)=> {
                 console.log(loginedUser);
-                this.signUp.responseMessage='验证邮件已发送，请查看'
+                this.currentUser.email=loginedUser.attributes.email;
+                this.currentUser.id=loginedUser.id;
+                alert('验证邮件已发送，请及时验证')
+                this.signUpVisible=false;
             }, (error)=>{
                 if(error.code === 125){
                     this.signUp.responseMessage='邮箱格式错误'
