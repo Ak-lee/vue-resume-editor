@@ -1,3 +1,11 @@
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+    // 当被绑定的元素插入到 DOM 中时……
+    inserted: function (el) {
+        // 聚焦元素
+        el.focus()
+    }
+})
 var vm=new Vue({
     el:'#app',
     data:{
@@ -53,6 +61,7 @@ var vm=new Vue({
                 this.loginVisible=false;
                 this.currentUser.id=loginedUser.id
                 this.currentUser.email=loginedUser.attributes.email;
+                this.saveResume()
             }, (error)=> {
                 if(error.code===216){
                     this.login.responseMessage='你的邮箱还未验证，请检查邮件'
