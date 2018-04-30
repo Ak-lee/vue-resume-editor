@@ -23,7 +23,8 @@ var vm=new Vue({
             skills:[
                 {name:'九阳神功',description:'九阳神功的描述'},
                 {name:'乾坤大挪移',description:'乾坤大挪移的描述'}
-            ]
+            ],
+            projects:[{name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目描述'}]
         },
         loginVisible:false,
         signUpVisible:false,
@@ -122,6 +123,12 @@ var vm=new Vue({
         },
         removeSkill(index){
             this.resume.skills.splice(index,1)
+        },
+        addProject(){
+            this.resume.projects.push({name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目名称'})
+        },
+        removeProject(index){
+            this.resume.projects.splice(index,1)
         },
         showLogin(){
             this.loginVisible=true;

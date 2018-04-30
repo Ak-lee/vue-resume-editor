@@ -84,3 +84,13 @@ input{
     margin:4px;
     color:#666;
 }
+.projects li{
+    position:relative;
+}
+.projects li>.remove{
+    position:absolute;
+    top:0;
+    right:0;
+    margin:4px;
+    color:#666;
+}
