@@ -46,21 +46,15 @@
             <section class="skills">
                 <h2>技能</h2>
                 <ul>
-                    <li>
-                        <span class="name">静态页面制作</span>
-                        <div class="description">完美实现设计稿</div>
+                    <li v-for="(item,index) in resume.skills">
+                        <editable-span @edit="onEdit(`skills[${index}].name`,$event)" class="name" :value="item.name"></editable-span>
+                        <div class="description">
+                            <editable-span @edit="onEdit(`skills[${index}].description`,$event)" :value="item.description"></editable-span>
+                        </div>
+                        <span class="remove" v-if="index>=2" @click="removeSkill(index)">X</span>
                     </li>
                     <li>
-                        <span class="name">静态页面制作</span>
-                        <div class="description">完美实现设计稿</div>
-                    </li>
-                    <li>
-                        <span class="name">静态页面制作</span>
-                        <div class="description">完美实现设计稿</div>
-                    </li>
-                    <li>
-                        <span class="name">静态页面制作</span>
-                        <div class="description">完美实现设计稿</div>
+                        <span @click="addSkill">添加一项技能</span>
                     </li>
                 </ul>
             </section>

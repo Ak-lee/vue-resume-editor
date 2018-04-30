@@ -19,7 +19,11 @@ var vm=new Vue({
             birthday: '1990年1月',
             jobTitle: '前端工程师',
             phone: '138111111111',
-            email: 'example@example.com'
+            email: 'example@example.com',
+            skills:[
+                {name:'九阳神功',description:'九阳神功的描述'},
+                {name:'乾坤大挪移',description:'乾坤大挪移的描述'}
+            ]
         },
         loginVisible:false,
         signUpVisible:false,
@@ -39,7 +43,24 @@ var vm=new Vue({
     },
     methods:{
         onEdit(key,value){
-            this.resume[key]=value;
+            let reg = /\[(\d+)\]/g
+            let result = this.resume;
+            if(reg.test(key)){
+                key=key.replace(reg,function(match,number){
+                    return '.'+number;
+                })
+                let keys= key.split('.')
+                for(let i=0;i<keys.length;i++){
+                    if(i===keys.length-1){
+                        result[keys[i]]=value
+                    }else{
+                        result=result[keys[i]]
+                    }
+                }
+            }else{
+                result[key]=value
+            }
+
         },
         onClickSave(){
             let currentUser = AV.User.current();
@@ -84,7 +105,6 @@ var vm=new Vue({
             // 设置邮箱
             user.setEmail(this.signUp.email);
             user.signUp().then((loginedUser)=> {
-                console.log(loginedUser);
                 this.currentUser.email=loginedUser.attributes.email;
                 this.currentUser.id=loginedUser.id;
                 alert('验证邮件已发送，请及时验证')
@@ -96,6 +116,12 @@ var vm=new Vue({
                     this.signUp.responseMessage='该邮箱已被注册'
                 }
             });
+        },
+        addSkill(){
+            this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
+        },
+        removeSkill(index){
+            this.resume.skills.splice(index,1)
         },
         showLogin(){
             this.loginVisible=true;
@@ -115,8 +141,7 @@ var vm=new Vue({
             var query = new AV.Query('User');
             query.get(this.currentUser.id).then((user)=> {
                 // 成功获得实例
-                console.log(user)
-                this.resume=Object.assign({},user.attributes.resume);
+                this.resume=Object.assign({},this.resume,user.attributes.resume);
             }, (error)=> {
                 // 异常处理
                 console.log(error);
