@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/editable-span.css">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/signUp.css">
+    <link rel="stylesheet" href="css/share.css">
 </head>
 <body>
 <div class="page" id="app">
@@ -14,7 +15,7 @@
         <div class="upper">
             <ul class="action">
                 <li><button @click="onClickSave" class="button">保存</button></li>
-                <li><button class="button">分享</button></li>
+                <li><button @click="shareVisible=true" class="button">分享</button></li>
                 <li><button class="button">打印</button></li>
                 <li><button class="button">换肤</button></li>
             </ul>
@@ -138,6 +139,12 @@
             </div>
             <div class="message">{{signUp.responseMessage}}</div>
         </form>
+    </div>
+    <div v-show="shareVisible" class="share" v-cloak>
+        <h3>请把下面的链接发送给面试官</h3>
+        <div>
+            <textarea readonly>{{shareLink}}</textarea>
+        </div>
     </div>
 </div>
 <script src="//at.alicdn.com/t/font_648255_iudnkr9ybck57b9.js"></script>

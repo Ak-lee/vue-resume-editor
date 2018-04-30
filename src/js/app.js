@@ -28,6 +28,7 @@ var vm=new Vue({
         },
         loginVisible:false,
         signUpVisible:false,
+        shareVisible:false,
         signUp:{
             email:'',
             password:'',
@@ -40,7 +41,7 @@ var vm=new Vue({
             verifyEmailBtnVisible:false,
             resetPasswordVisible:false
         },
-
+        shareLink:''
     },
     methods:{
         onEdit(key,value){
@@ -83,6 +84,7 @@ var vm=new Vue({
                 this.loginVisible=false;
                 this.currentUser.id=loginedUser.id
                 this.currentUser.email=loginedUser.attributes.email;
+                this.shareLink=location.origin+location.pathname+'!user_id='+vm.currentUser.id
                 this.saveResume()
             }, (error)=> {
                 if(error.code===216){
@@ -110,6 +112,7 @@ var vm=new Vue({
                 this.currentUser.id=loginedUser.id;
                 alert('验证邮件已发送，请及时验证')
                 this.signUpVisible=false;
+                this.shareLink=location.origin+location.pathname+'!user_id='+vm.currentUser.id
             }, (error)=>{
                 if(error.code === 125){
                     this.signUp.responseMessage='邮箱格式错误'
@@ -191,4 +194,7 @@ if(!!currentUser){
     vm.currentUser.id=currentUser.id;
     vm.currentUser.email=currentUser.attributes.email;
     vm.getResume()
+    vm.shareLink=location.origin+location.pathname+'!user_id='+vm.currentUser.id
+    console.log('shareLink')
+    console.log(vm.shareLink)
 }
