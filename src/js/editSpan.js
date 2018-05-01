@@ -1,10 +1,10 @@
 Vue.component('editableSpan',{
-    props:['value'],
+    props:['value','disabled'],
     template:`
             <span class="editableSpan">
                 <span v-show="!editing">{{value}}  </span>
                 <input v-focus type="text" v-show="editing" v-bind:value="value" @blur="outFocus" @input="triggerEdit" placeholder="在这里输入内容">
-                <button @click="editing=!editing">{{editing?'保存':'编辑'}}</button>
+                <button v-if="!disabled" @click="editing=!editing">{{editing?'保存':'编辑'}}</button>
             </span>
         `,
     data(){
@@ -15,14 +15,12 @@ Vue.component('editableSpan',{
     },
     methods:{
         triggerEdit(e){
-            if(!!e.target.value){
-                this.$emit('edit',e.target.value)
-            }else{
-                this.$emit('edit','请在这里填写')
-            }
-
+            this.$emit('edit',e.target.value)
         },
-        outFocus(){
+        outFocus(e){
+            if(!e.target.value){
+                this.$emit('edit','请在这里输入内容')
+            }
             this.editing=false;
         }
     }

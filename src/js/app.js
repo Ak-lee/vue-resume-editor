@@ -9,16 +9,21 @@ Vue.directive('focus', {
 var vm=new Vue({
     el:'#app',
     data:{
+        mode:'edit',     // or preview
+        previewUser:{
+            id:''
+        },
+        previewResume:{},
         currentUser:{
             id:'',
             email:''
         },
         resume: {
-            name: '高圆圆',
-            gender: '女',
-            birthday: '1990年1月',
-            jobTitle: '前端工程师',
-            phone: '138111111111',
+            name: '姓名',
+            gender: '男or女',
+            birthday: 'xxxx年xx月',
+            jobTitle: '应聘XXXX攻城狮',
+            phone: '13511112222',
             email: 'example@example.com',
             skills:[
                 {name:'九阳神功',description:'九阳神功的描述'},
@@ -46,7 +51,12 @@ var vm=new Vue({
     methods:{
         onEdit(key,value){
             let reg = /\[(\d+)\]/g
-            let result = this.resume;
+            let result
+            if(this.mode==='edit'){
+                result=this.resume
+            }else{
+                result=this.previewResume
+            }
             if(reg.test(key)){
                 key=key.replace(reg,function(match,number){
                     return '.'+number;
@@ -77,6 +87,7 @@ var vm=new Vue({
             AV.User.logOut();
             this.currentUser.id=''
             this.currentUser.email=''
+            this.resetResume()
             alert('注销成功');
         },
         onLogin(){
@@ -84,8 +95,7 @@ var vm=new Vue({
                 this.loginVisible=false;
                 this.currentUser.id=loginedUser.id
                 this.currentUser.email=loginedUser.attributes.email;
-                this.shareLink=location.origin+location.pathname+'!user_id='+vm.currentUser.id
-                this.saveResume()
+                this.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.id
             }, (error)=> {
                 if(error.code===216){
                     this.login.responseMessage='你的邮箱还未验证，请检查邮件'
@@ -147,14 +157,16 @@ var vm=new Vue({
                 alert('保存失败')
             })
         },
-        getResume(){
+        getResume(user){
             var query = new AV.Query('User');
-            query.get(this.currentUser.id).then((user)=> {
+            return query.get(user.id).then((user)=> {
                 // 成功获得实例
-                this.resume=Object.assign({},this.resume,user.attributes.resume);
+                let resume=user.attributes.resume;
+                return resume
             }, (error)=> {
                 // 异常处理
                 console.log(error);
+                return error;
             });
         },
         verifyEmail(){
@@ -177,6 +189,21 @@ var vm=new Vue({
             this.login.verifyEmailBtnVisible=false;
             this.login.resetPasswordVisible=false;
         },
+        resetResume(){
+            this.resume={
+                name: '姓名',
+                    gender: '男or女',
+                birthday: 'xxxx年xx月',
+                jobTitle: '应聘XXXX攻城狮',
+                phone: '13511112222',
+                email: 'example@example.com',
+                skills:[
+                {name:'九阳神功',description:'九阳神功的描述'},
+                {name:'乾坤大挪移',description:'乾坤大挪移的描述'}
+            ],
+                projects:[{name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目描述'}]
+            }
+        },
         resetPassword(){
             AV.User.requestPasswordReset(this.login.email).then((success)=> {
                 this.login.responseMessage='已发送重置密码邮件'
@@ -187,14 +214,51 @@ var vm=new Vue({
                 console.log(error);
             });
         }
+    },
+    watch:{
+        'currentUser.id':function(newValue,oldValue){
+            if(newValue){
+                this.getResume(this.currentUser)
+                    .then((resume)=>{
+                        this.resume=resume
+                    },(error)=>{
+                        console.log(error);
+                    })
+            }
+        }
+    },
+    computed:{
+        displayResume(){
+            if(this.mode==='edit'){
+                return this.resume;
+            }else{
+                return this.previewResume;
+            }
+        }
     }
 })
+
+
+let search = location.search;
+let regex = /user_id=([^&]+)/
+if(search.match(regex)){
+    vm.previewUser.id = search.match(regex)[1]
+    vm.getResume(vm.previewUser)
+        .then((resume)=>{vm.previewResume=resume},(error)=>{console.log(error)})
+    vm.mode='preview'
+}
+
 let currentUser=AV.User.current()
 if(!!currentUser){
     vm.currentUser.id=currentUser.id;
     vm.currentUser.email=currentUser.attributes.email;
-    vm.getResume()
-    vm.shareLink=location.origin+location.pathname+'!user_id='+vm.currentUser.id
-    console.log('shareLink')
-    console.log(vm.shareLink)
+    vm.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.id
+    vm.getResume(currentUser)
+        .then((resume)=>{
+            vm.resume=resume
+        },(error)=>{
+            console.log(error);
+        })
 }
+
+

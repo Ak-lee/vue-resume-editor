@@ -94,3 +94,11 @@ input{
     margin:4px;
     color:#666;
 }
+.exitPreview{
+    position:fixed;
+    top:0;
+    left:0;
+}
+.share{
+    position:relative;
+}
