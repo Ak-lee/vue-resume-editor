@@ -16,13 +16,12 @@
         <div class="upper">
             <ul class="action">
                 <li><button @click="onClickSave" class="button">保存</button></li>
-                <li><button @click="shareVisible=true" class="button">分享</button></li>
+                <li><button @click="showShare" class="button">分享</button></li>
                 <li><button @click="print" class="button">打印</button></li>
-                <li><button class="button">换肤</button></li>
             </ul>
         </div>
         <div class="down">
-            <button v-if="currentUser.id" @click="onLogout" class="button">登出</button>
+            <button v-if="currentUser.objectId" @click="onLogout" class="button">登出</button>
             <button v-else @click="showLogin()" class="button">登录</button>
         </div>
     </aside>
@@ -90,65 +89,9 @@
             </section>
         </div>
     </main>
-    <div v-show="loginVisible" v-cloak class="login">
-        <form @submit.prevent="onLogin" >
-            <div class="title">
-                <h2>登录</h2>
-                <span @click="signUpVisible=true; loginVisible=false;">| 注册</span>
-            </div>
-            <button class="closeBtn" type="button" @click="loginVisible=false">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-Close"></use>
-                </svg>
-            </button>
-            <div class="row">
-                <label>邮箱</label>
-                <input type="text" v-model="login.email">
-            </div>
-            <div class="row">
-                <label>密码</label>
-                <input type="password" v-model="login.password">
-            </div>
-            <div class="action">
-                <button type="submit">提交</button>
-                <button class="resetPassword" v-if="login.resetPasswordVisible" @click="resetPassword" type="button">忘记密码?</button>
-            </div>
-            <div class="message" v-html="login.responseMessage"></div>
-            <button class="sendEmailBtn" type="button" v-if="login.verifyEmailBtnVisible" @click="verifyEmail">发送邮件</button>
-        </form>
-    </div>
-    <div  v-show="signUpVisible" v-cloak class="signUp">
-        <form @submit.prevent="onSignUp">
-            <div class="title">
-                <h2>注册</h2>
-                <span @click="signUpVisible=false; loginVisible=true;">| 登录</span>
-            </div>
-            <button class="closeBtn" @click="signUpVisible=false">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-Close"></use>
-                </svg>
-            </button>
-            <div class="row">
-                <label>邮箱</label>
-                <input  v-model="signUp.email" type="text">
-            </div>
-            <div class="row">
-                <label>密码</label>
-                <input v-model="signUp.password" type="password">
-            </div>
-            <div class="action">
-                <button type="submit">提交</button>
-            </div>
-            <div class="message">{{signUp.responseMessage}}</div>
-        </form>
-    </div>
-    <div v-show="shareVisible" class="share" v-cloak>
-        <h3>请把下面的链接发送给面试官</h3>
-        <div>
-            <textarea readonly>{{shareLink}}</textarea>
-        </div>
-        <div @click="shareVisible=false" class="closeBtn">X</div>
-    </div>
+    <login-dialog @login="login" @goto-sign-up-dialog="gotoSignUpDialog" @close-login-dialog="closeLoginDialog" v-show="loginVisible" v-cloak ></login-dialog>
+    <sign-up-dialog @login="login" @goto-login-dialog="gotoLoginDialog" @close-sign-up-dialog="closeSignUpDialog" v-show="signUpVisible" v-cloak></sign-up-dialog>
+    <share-dialog @close-share-dialog="closeShareDialog" :share-link="shareLink" v-show="shareVisible" class="share" v-cloak></share-dialog>
     <button class="exitPreview" @click="mode='edit'" v-if="mode==='preview'" v-cloak>退出预览</button>
 </div>
 <script src="//at.alicdn.com/t/font_648255_iudnkr9ybck57b9.js"></script>
@@ -156,7 +99,9 @@
 <script src="js/av.js" ></script>
 <script src="../vendors/vue.js"></script>
 <script src="./js/editSpan.js"></script>
+<script src="./js/login.js"></script>
+<script src="./js/signUp.js"></script>
+<script src="./js/share.js"></script>
 <script src="./js/app.js"></script>
-
 </body>
 </html>

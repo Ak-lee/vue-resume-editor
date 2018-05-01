@@ -11,11 +11,11 @@ var vm=new Vue({
     data:{
         mode:'edit',     // or preview
         previewUser:{
-            id:''
+            objectId:''
         },
         previewResume:{},
         currentUser:{
-            id:'',
+            objectId:'',
             email:''
         },
         resume: {
@@ -26,32 +26,71 @@ var vm=new Vue({
             phone: '13511112222',
             email: 'example@example.com',
             skills:[
-                {name:'九阳神功',description:'九阳神功的描述'},
-                {name:'乾坤大挪移',description:'乾坤大挪移的描述'}
+                {name:'技能名',description:'对技能的描述'},
+                {name:'技能名',description:'对技能的描述'}
             ],
             projects:[{name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目描述'}]
         },
         loginVisible:false,
         signUpVisible:false,
         shareVisible:false,
-        signUp:{
-            email:'',
-            password:'',
-            responseMessage:''
-        },
-        login:{
-            email:'',
-            password:'',
-            responseMessage:'',
-            verifyEmailBtnVisible:false,
-            resetPasswordVisible:false
-        },
         shareLink:''
     },
     methods:{
+        // Login 对话框相关
+        showLogin(){
+            this.loginVisible=true;
+        },
+        gotoSignUpDialog(){
+            this.loginVisible=false;
+            this.signUpVisible=true;
+        },
+        closeLoginDialog(){
+            this.loginVisible=false;
+        },
+        login(user){
+            this.currentUser.objectId=user.objectId;
+            this.currentUser.email=user.email;
+            this.loginVisible=false;
+            this.signUpVisible=false;
+        },
+        // signUp 对话框相关
+        gotoLoginDialog(){
+            this.signUpVisible=false;
+            this.loginVisible=true;
+        },
+        closeSignUpDialog(){
+            console.log('closeSignUpDialog')
+            this.signUpVisible=false;
+        },
+        // share 对话框相关
+        closeShareDialog(){
+            this.shareVisible=false;
+        },
+        showShare(){
+            if(this.currentUser.objectId){
+                this.shareVisible=!this.shareVisible;
+            }else{
+                alert('请先登录')
+            }
+
+        },
+        // aside边栏save按钮相关
+        onClickSave(){
+            let currentUser = AV.User.current();
+            if (!currentUser) {
+                // 未登录
+                this.showLogin()
+            }else{
+                this.saveResume()
+            }
+        },
+
+        // aside边栏打印按钮相关
         print(){
             window.print();
         },
+        // main 主内容区相关
         onEdit(key,value){
             let reg = /\[(\d+)\]/g
             let result
@@ -77,62 +116,13 @@ var vm=new Vue({
             }
 
         },
-        onClickSave(){
-            let currentUser = AV.User.current();
-            if (!currentUser) {
-                // 未登录
-                this.showLogin()
-            }else{
-                this.saveResume()
-            }
-        },
+
         onLogout(){
             AV.User.logOut();
-            this.currentUser.id=''
+            this.currentUser.objectId=''
             this.currentUser.email=''
             this.resetResume()
             alert('注销成功');
-        },
-        onLogin(){
-            AV.User.logIn(this.login.email, this.login.password).then((loginedUser)=> {
-                this.loginVisible=false;
-                this.currentUser.id=loginedUser.id
-                this.currentUser.email=loginedUser.attributes.email;
-                this.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.id
-            }, (error)=> {
-                if(error.code===216){
-                    this.login.responseMessage='你的邮箱还未验证，请检查邮件'
-                    this.login.verifyEmailBtnVisible=true
-                }else if(error.code===211){
-                    this.login.responseMessage='该用户未注册'
-                }else if(error.code===210){
-                    this.login.responseMessage='密码错误'
-                    this.login.resetPasswordVisible=true;
-                }
-            });
-        },
-        onSignUp(){
-            // 新建 AVUser 对象实例
-            var user = new AV.User();
-            // 设置用户名
-            user.setUsername(this.signUp.email);
-            // 设置密码
-            user.setPassword(this.signUp.password);
-            // 设置邮箱
-            user.setEmail(this.signUp.email);
-            user.signUp().then((loginedUser)=> {
-                this.currentUser.email=loginedUser.attributes.email;
-                this.currentUser.id=loginedUser.id;
-                alert('验证邮件已发送，请及时验证')
-                this.signUpVisible=false;
-                this.shareLink=location.origin+location.pathname+'!user_id='+vm.currentUser.id
-            }, (error)=>{
-                if(error.code === 125){
-                    this.signUp.responseMessage='邮箱格式错误'
-                }else if(error.code === 203){
-                    this.signUp.responseMessage='该邮箱已被注册'
-                }
-            });
         },
         addSkill(){
             this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
@@ -146,13 +136,9 @@ var vm=new Vue({
         removeProject(index){
             this.resume.projects.splice(index,1)
         },
-        showLogin(){
-            this.loginVisible=true;
-            this.resetStatus()
-        },
         saveResume(){
-            let {id} = AV.User.current()
-            let user = AV.Object.createWithoutData('User', id)
+            let {OjcetId} = AV.User.current()
+            let user = AV.Object.createWithoutData('User', objectId)
             user.set('resume', this.resume)
             user.save().then((success)=>{
                 alert('保存成功')
@@ -162,35 +148,18 @@ var vm=new Vue({
         },
         getResume(user){
             var query = new AV.Query('User');
-            return query.get(user.id).then((user)=> {
+            return query.get(user.objectId).then((data)=> {
                 // 成功获得实例
-                let resume=user.attributes.resume;
-                return resume
+                if(data.toJSON().resume){
+                    return data.toJSON().resume
+                }else{
+                    return this.resume;
+                }
             }, (error)=> {
                 // 异常处理
                 console.log(error);
                 return error;
             });
-        },
-        verifyEmail(){
-            AV.User.requestEmailVerify(this.login.email).then((result)=>{
-                this.login.responseMessage='邮件已发送，请查看'
-                this.login.verifyEmailBtnVisible=false;
-            }, (error)=> {
-                if(error.code===1){
-                    this.login.responseMessage='操作频繁，请稍后重试'
-                }
-            });
-        },
-        resetStatus(){
-            this.signUp.email=''
-            this.signUp.password=''
-            this.signUp.responseMessage=''
-            this.login.email=''
-            this.login.password=''
-            this.login.responseMessage=''
-            this.login.verifyEmailBtnVisible=false;
-            this.login.resetPasswordVisible=false;
         },
         resetResume(){
             this.resume={
@@ -207,19 +176,9 @@ var vm=new Vue({
                 projects:[{name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目描述'}]
             }
         },
-        resetPassword(){
-            AV.User.requestPasswordReset(this.login.email).then((success)=> {
-                this.login.responseMessage='已发送重置密码邮件'
-            }, (error)=> {
-                if(error.code===1){
-                    this.login.responseMessage='操作频繁，请稍后重试'
-                }
-                console.log(error);
-            });
-        }
     },
     watch:{
-        'currentUser.id':function(newValue,oldValue){
+        'currentUser.objectId':function(newValue,oldValue){
             if(newValue){
                 this.getResume(this.currentUser)
                     .then((resume)=>{
@@ -227,6 +186,7 @@ var vm=new Vue({
                     },(error)=>{
                         console.log(error);
                     })
+                this.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.objectId;
             }
         }
     },
@@ -245,7 +205,7 @@ var vm=new Vue({
 let search = location.search;
 let regex = /user_id=([^&]+)/
 if(search.match(regex)){
-    vm.previewUser.id = search.match(regex)[1]
+    vm.previewUser.objectId = search.match(regex)[1]
     vm.getResume(vm.previewUser)
         .then((resume)=>{vm.previewResume=resume},(error)=>{console.log(error)})
     vm.mode='preview'
@@ -253,9 +213,10 @@ if(search.match(regex)){
 
 let currentUser=AV.User.current()
 if(!!currentUser){
-    vm.currentUser.id=currentUser.id;
-    vm.currentUser.email=currentUser.attributes.email;
-    vm.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.id
+    currentUser=AV.User.current().toJSON()
+    vm.currentUser.objectId=currentUser.objectId;
+    vm.currentUser.email=currentUser.email;
+    vm.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.objectId
     vm.getResume(currentUser)
         .then((resume)=>{
             vm.resume=resume
