@@ -49,6 +49,9 @@ var vm=new Vue({
         shareLink:''
     },
     methods:{
+        print(){
+            window.print();
+        },
         onEdit(key,value){
             let reg = /\[(\d+)\]/g
             let result
