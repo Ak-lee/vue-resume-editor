@@ -1,22 +1,16 @@
 Vue.component('resume',{
-    props:['displayResume','mode','currentUser'],
+    props:['myresume','mode','currentUser'],
     data:function(){
-        console.log('displayResume')
-        console.log(this.displayResume)
-        console.log('displayResume')
-        console.log('this')
-        console.log(this)
         return {
-            resume:this.displayResume
+            resume:Object.assign({},this.myresume)
         }
     },
     template:`
     <main>
-    {{displayResume}}
+    {{myresume}}
     <br>
     {{resume}}
     <br>
-    {{this.$data}}
         <div class="welcome">欢迎你  {{currentUser.email}}</div>
             <div class="resume">
                 <h1>

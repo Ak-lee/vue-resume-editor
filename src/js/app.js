@@ -135,14 +135,12 @@ var vm=new Vue({
         //     }
         // },
         updateResume(resume){
-            console.log('监听到update')
             this.resume=resume;
         }
     },
     watch:{
         'currentUser.objectId':function(newValue,oldValue){
             if(newValue){
-                console.log('监听到变化')
                 this.getResume(this.currentUser)
                     .then((resume)=>{
                         this.resume=resume
@@ -176,17 +174,23 @@ if(search.match(regex)){
 
 let currentUser=AV.User.current()
 if(!!currentUser){
-    console.log('currentUser')
     currentUser=AV.User.current().toJSON()
     vm.currentUser.objectId=currentUser.objectId;
     vm.currentUser.email=currentUser.email;
     vm.shareLink=location.origin+location.pathname+'?user_id='+vm.currentUser.objectId
     vm.getResume(currentUser)
         .then((resume)=>{
+            console.log('拿到了resume')
+            console.log(resume)
             vm.resume=resume
+            console.log('vm.resume')
+            console.log(vm.resume)
         },(error)=>{
             console.log(error);
         })
 }
+console.log('vm.displayResume')
+console.log(vm.displayResume);
+
 
 

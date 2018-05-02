@@ -12,6 +12,7 @@
 </head>
 <body>
 <div class="page" id="app">
+    {{resume}}
     <aside v-show="mode==='edit'">
         <div class="upper">
             <ul class="action">
@@ -25,7 +26,7 @@
             <button v-else @click="showLogin()" class="button">登录</button>
         </div>
     </aside>
-    <resume @edit="onEdit" @updateResume="updateResume" :display-resume="displayResume" :mode="mode" :current-user="currentUser"></resume>
+    <resume @edit="onEdit" @updateResume="updateResume" v-bind:myresume="displayResume" :mode="mode" :current-user="currentUser"></resume>
     <login-dialog @login="login" @goto-sign-up-dialog="gotoSignUpDialog" @close-login-dialog="loginVisible=false;" v-show="loginVisible" v-cloak ></login-dialog>
     <sign-up-dialog @login="login" @goto-login-dialog="gotoLoginDialog" @close-sign-up-dialog="signUpVisible=false;" v-show="signUpVisible" v-cloak></sign-up-dialog>
     <share-dialog @close-share-dialog="closeShareDialog" :share-link="shareLink" v-show="shareVisible" class="share" v-cloak></share-dialog>
