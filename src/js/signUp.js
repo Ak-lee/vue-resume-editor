@@ -1,4 +1,4 @@
-Vue.component('sign-up-dialog',{
+Vue.component('signUpDialog',{
     data(){
       return {
           signUp:{
@@ -13,9 +13,9 @@ Vue.component('sign-up-dialog',{
         <form @submit.prevent="onSignUp">
             <div class="title">
                 <h2>注册</h2>
-                <span @click="gotoLoginDialog">| 登录</span>
+                <span @click="$emit('goto-login-dialog')">| 登录</span>
             </div>
-            <button type="button" class="closeBtn" @click="closeSignUpDialog">
+            <button type="button" class="closeBtn" @click="$emit('close-sign-up-dialog')">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-Close"></use>
                 </svg>
@@ -56,12 +56,6 @@ Vue.component('sign-up-dialog',{
                     this.signUp.responseMessage='该邮箱已被注册'
                 }
             });
-        },
-        gotoLoginDialog(){
-            this.$emit('goto-login-dialog')
-        },
-        closeSignUpDialog(){
-            this.$emit('close-sign-up-dialog')
-        },
+        }
     }
 })

@@ -1,4 +1,4 @@
-Vue.component('login-dialog',{
+Vue.component('loginDialog',{
     data(){
         return{
             login:{
@@ -15,9 +15,9 @@ Vue.component('login-dialog',{
         <form @submit.prevent="onLogin">
             <div class="title">
                 <h2>登录</h2>
-                <span @click="gotoSignUpDialog">| 注册</span>
+                <span @click="$emit('goto-sign-up-dialog')">| 注册</span>
             </div>
-            <button class="closeBtn" type="button" @click="closeLoginDialog">
+            <button class="closeBtn" type="button" @click="$emit('close-login-dialog')">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-Close"></use>
                 </svg>
@@ -75,14 +75,6 @@ Vue.component('login-dialog',{
                     this.login.responseMessage='操作频繁，请稍后重试'
                 }
             });
-        },
-        gotoSignUpDialog(){
-            this.$emit('goto-sign-up-dialog')
-        },
-        closeLoginDialog(){
-            this.$emit('close-login-dialog')
         }
-
     }
-
 })

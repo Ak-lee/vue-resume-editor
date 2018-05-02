@@ -34,9 +34,12 @@ var vm=new Vue({
         loginVisible:false,
         signUpVisible:false,
         shareVisible:false,
-        shareLink:''
+        shareLink:'',
     },
     methods:{
+        onEdit(result){
+            this.resume=result
+        },
         // Login 对话框相关
         showLogin(){
             this.loginVisible=true;
@@ -44,9 +47,6 @@ var vm=new Vue({
         gotoSignUpDialog(){
             this.loginVisible=false;
             this.signUpVisible=true;
-        },
-        closeLoginDialog(){
-            this.loginVisible=false;
         },
         login(user){
             this.currentUser.objectId=user.objectId;
@@ -58,10 +58,6 @@ var vm=new Vue({
         gotoLoginDialog(){
             this.signUpVisible=false;
             this.loginVisible=true;
-        },
-        closeSignUpDialog(){
-            console.log('closeSignUpDialog')
-            this.signUpVisible=false;
         },
         // share 对话框相关
         closeShareDialog(){
@@ -91,50 +87,12 @@ var vm=new Vue({
             window.print();
         },
         // main 主内容区相关
-        onEdit(key,value){
-            let reg = /\[(\d+)\]/g
-            let result
-            if(this.mode==='edit'){
-                result=this.resume
-            }else{
-                result=this.previewResume
-            }
-            if(reg.test(key)){
-                key=key.replace(reg,function(match,number){
-                    return '.'+number;
-                })
-                let keys= key.split('.')
-                for(let i=0;i<keys.length;i++){
-                    if(i===keys.length-1){
-                        result[keys[i]]=value
-                    }else{
-                        result=result[keys[i]]
-                    }
-                }
-            }else{
-                result[key]=value
-            }
-
-        },
-
         onLogout(){
             AV.User.logOut();
             this.currentUser.objectId=''
             this.currentUser.email=''
-            this.resetResume()
-            alert('注销成功');
-        },
-        addSkill(){
-            this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
-        },
-        removeSkill(index){
-            this.resume.skills.splice(index,1)
-        },
-        addProject(){
-            this.resume.projects.push({name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目名称'})
-        },
-        removeProject(index){
-            this.resume.projects.splice(index,1)
+            // this.resetResume()
+            // alert('注销成功');
         },
         saveResume(){
             let {OjcetId} = AV.User.current()
@@ -161,25 +119,30 @@ var vm=new Vue({
                 return error;
             });
         },
-        resetResume(){
-            this.resume={
-                name: '姓名',
-                    gender: '男or女',
-                birthday: 'xxxx年xx月',
-                jobTitle: '应聘XXXX攻城狮',
-                phone: '13511112222',
-                email: 'example@example.com',
-                skills:[
-                {name:'九阳神功',description:'九阳神功的描述'},
-                {name:'乾坤大挪移',description:'乾坤大挪移的描述'}
-            ],
-                projects:[{name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目描述'}]
-            }
-        },
+        // resetResume(){
+        //     this.resume={
+        //         name: '姓名',
+        //             gender: '男or女',
+        //         birthday: 'xxxx年xx月',
+        //         jobTitle: '应聘XXXX攻城狮',
+        //         phone: '13511112222',
+        //         email: 'example@example.com',
+        //         skills:[
+        //         {name:'九阳神功',description:'九阳神功的描述'},
+        //         {name:'乾坤大挪移',description:'乾坤大挪移的描述'}
+        //     ],
+        //         projects:[{name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目描述'}]
+        //     }
+        // },
+        updateResume(resume){
+            console.log('监听到update')
+            this.resume=resume;
+        }
     },
     watch:{
         'currentUser.objectId':function(newValue,oldValue){
             if(newValue){
+                console.log('监听到变化')
                 this.getResume(this.currentUser)
                     .then((resume)=>{
                         this.resume=resume
@@ -213,6 +176,7 @@ if(search.match(regex)){
 
 let currentUser=AV.User.current()
 if(!!currentUser){
+    console.log('currentUser')
     currentUser=AV.User.current().toJSON()
     vm.currentUser.objectId=currentUser.objectId;
     vm.currentUser.email=currentUser.email;

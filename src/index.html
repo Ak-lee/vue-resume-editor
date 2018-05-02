@@ -25,72 +25,9 @@
             <button v-else @click="showLogin()" class="button">登录</button>
         </div>
     </aside>
-    <main>
-        <div class="welcome">欢迎你  {{currentUser.email}}</div>
-        <div class="resume">
-            <h1>
-                <editable-span :disabled="mode==='preview'" :value="displayResume.name" @edit="onEdit('name',$event)"></editable-span>
-            </h1>
-            <section>
-                <p class="jobTitle">应聘职位：
-                    <editable-span :disabled="mode==='preview'" :value="displayResume.jobTitle" @edit="onEdit('jobTitle',$event)"></editable-span>
-                </p>
-                <p class="profile">
-                    <editable-span :disabled="mode==='preview'" :value="displayResume.birthday" @edit="onEdit('birthday',$event)"></editable-span>
-                    |
-                    <editable-span :disabled="mode==='preview'" :value="displayResume.gender" @edit="onEdit('gender', $event)"></editable-span>
-                    |
-                    <editable-span :disabled="mode==='preview'" :value="displayResume.email" @edit="onEdit('email', $event)"></editable-span>
-                    |
-                    <editable-span :disabled="mode==='preview'" :value="displayResume.phone" @edit="onEdit('phone', $event)"></editable-span>
-                </p>
-            </section>
-            <section class="skills">
-                <h2>技能</h2>
-                <ul>
-                    <li v-for="(item,index) in displayResume.skills">
-                        <editable-span :disabled="mode==='preview'" :value="item.name" @edit="onEdit(`skills[${index}].name`,$event)" class="name" ></editable-span>
-                        <div class="description">
-                            <editable-span :disabled="mode==='preview'" :value="item.description" @edit="onEdit(`skills[${index}].description`,$event)"></editable-span>
-                        </div>
-                        <span class="remove" v-if="index>=2 && mode==='edit'" @click="removeSkill(index)">X</span>
-                    </li>
-                    <li class="addSkill" v-if="mode==='edit'">
-                        <span @click="addSkill">添加一项技能</span>
-                    </li>
-                </ul>
-            </section>
-            <section class="projects">
-                <h2>项目经历</h2>
-                <ol>
-                    <li v-for="(item,index) in displayResume.projects">
-                        <header>
-                            <div class="start">
-                                <h3 class="name">
-                                    <editable-span :disabled="mode==='preview'" :value="item.name" @edit="onEdit(`projects[${index}].name`,$event)"></editable-span>
-                                </h3>
-                                <div class="link">
-                                    <editable-span :disabled="mode==='preview'" :value="item.link" @edit="onEdit(`projects[${index}].link`,$event)"></editable-span>
-                                </div>
-                            </div>
-                            <div class="end">
-                                <div class="keywords">
-                                    <editable-span :disabled="mode==='preview'" :value="item.keywords" @edit="onEdit(`projects[${index}].keywords`,$event)"></editable-span>
-                                </div>
-                            </div>
-                        </header>
-                        <p class="description">
-                            <editable-span :disabled="mode==='preview'" :value="item.description" @edit="onEdit(`projects[${index}].description`,$event)"></editable-span>
-                        </p>
-                        <span class="remove" v-if="index>=1 && mode === 'edit'" @click="removeProject(index)">X</span>
-                    </li>
-                    <li class="addProject" v-if="mode === 'edit'" @click="addProject">添加一项</li>
-                </ol>
-            </section>
-        </div>
-    </main>
-    <login-dialog @login="login" @goto-sign-up-dialog="gotoSignUpDialog" @close-login-dialog="closeLoginDialog" v-show="loginVisible" v-cloak ></login-dialog>
-    <sign-up-dialog @login="login" @goto-login-dialog="gotoLoginDialog" @close-sign-up-dialog="closeSignUpDialog" v-show="signUpVisible" v-cloak></sign-up-dialog>
+    <resume @edit="onEdit" @updateResume="updateResume" :display-resume="displayResume" :mode="mode" :current-user="currentUser"></resume>
+    <login-dialog @login="login" @goto-sign-up-dialog="gotoSignUpDialog" @close-login-dialog="loginVisible=false;" v-show="loginVisible" v-cloak ></login-dialog>
+    <sign-up-dialog @login="login" @goto-login-dialog="gotoLoginDialog" @close-sign-up-dialog="signUpVisible=false;" v-show="signUpVisible" v-cloak></sign-up-dialog>
     <share-dialog @close-share-dialog="closeShareDialog" :share-link="shareLink" v-show="shareVisible" class="share" v-cloak></share-dialog>
     <button class="exitPreview" @click="mode='edit'" v-if="mode==='preview'" v-cloak>退出预览</button>
 </div>
@@ -102,6 +39,7 @@
 <script src="./js/login.js"></script>
 <script src="./js/signUp.js"></script>
 <script src="./js/share.js"></script>
+<script src="./js/resume.js"></script>
 <script src="./js/app.js"></script>
 </body>
 </html>

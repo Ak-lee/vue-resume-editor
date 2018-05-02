@@ -1,4 +1,4 @@
-Vue.component('share-dialog',{
+Vue.component('shareDialog',{
     props:['shareLink'],
     template:`
     <div>
@@ -6,12 +6,7 @@ Vue.component('share-dialog',{
         <div>
             <textarea readonly>{{shareLink}}</textarea>
         </div>
-        <div @click="closeShareDialog" class="closeBtn">X</div>
+        <div @click="$emit('close-share-dialog')" class="closeBtn">X</div>
     </div>
-    `,
-    methods:{
-        closeShareDialog(){
-            this.$emit('close-share-dialog')
-        }
-    }
+    `
 })
