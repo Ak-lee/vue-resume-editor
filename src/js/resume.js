@@ -1,39 +1,31 @@
+
 Vue.component('resume',{
     props:['myresume','mode','currentUser'],
-    data:function(){
-        return {
-            resume:Object.assign({},this.myresume)
-        }
-    },
     template:`
     <main>
-    {{myresume}}
-    <br>
-    {{resume}}
-    <br>
         <div class="welcome">欢迎你  {{currentUser.email}}</div>
             <div class="resume">
                 <h1>
-                    <editable-span :disabled="mode==='preview'" :value="resume.name" @edit="onEdit('name',$event)"></editable-span>
+                    <editable-span :disabled="mode==='preview'" :value="myresume.name" @edit="onEdit('name',$event)"></editable-span>
                 </h1>
                 <section>
                     <p class="jobTitle">应聘职位：
-                        <editable-span :disabled="mode==='preview'" :value="resume.jobTitle" @edit="onEdit('jobTitle',$event)"></editable-span>
+                        <editable-span :disabled="mode==='preview'" :value="myresume.jobTitle" @edit="onEdit('jobTitle',$event)"></editable-span>
                     </p>
                     <p class="profile">
-                        <editable-span :disabled="mode==='preview'" :value="resume.birthday" @edit="onEdit('birthday',$event)"></editable-span>
+                        <editable-span :disabled="mode==='preview'" :value="myresume.birthday" @edit="onEdit('birthday',$event)"></editable-span>
                         |
-                        <editable-span :disabled="mode==='preview'" :value="resume.gender" @edit="onEdit('gender', $event)"></editable-span>
+                        <editable-span :disabled="mode==='preview'" :value="myresume.gender" @edit="onEdit('gender', $event)"></editable-span>
                         |
-                        <editable-span :disabled="mode==='preview'" :value="resume.email" @edit="onEdit('email', $event)"></editable-span>
+                        <editable-span :disabled="mode==='preview'" :value="myresume.email" @edit="onEdit('email', $event)"></editable-span>
                         |
-                        <editable-span :disabled="mode==='preview'" :value="resume.phone" @edit="onEdit('phone', $event)"></editable-span>
+                        <editable-span :disabled="mode==='preview'" :value="myresume.phone" @edit="onEdit('phone', $event)"></editable-span>
                     </p>
                 </section>
                 <section class="skills">
                     <h2>技能</h2>
                     <ul>
-                        <li v-for="(item,index) in resume.skills">
+                        <li v-for="(item,index) in myresume.skills">
                             <editable-span :disabled="mode==='preview'" :value="item.name" @edit="onEdit('skills['+index+'].name',$event)" class="name" ></editable-span>
                             <div class="description">
                                 <editable-span :disabled="mode==='preview'" :value="item.description" @edit="onEdit('skills['+index+'].description',$event)"></editable-span>
@@ -48,7 +40,7 @@ Vue.component('resume',{
                 <section class="projects">
                     <h2>项目经历</h2>
                     <ol>
-                        <li v-for="(item,index) in resume.projects">
+                        <li v-for="(item,index) in myresume.projects">
                             <header>
                                 <div class="start">
                                     <h3 class="name">
@@ -75,17 +67,10 @@ Vue.component('resume',{
             </div>
         </main>
     `,
-    watch:{
-        'resume':function(newValue,oldValue){
-            console.log('watch 到了resume的变化')
-            newValue =Object.assign({},newValue)
-            this.$emit('updateResume',newValue)
-        }
-    },
     methods:{
         onEdit(key,value){
             let reg = /\[(\d+)\]/g
-            let result=this.resume  // result 是引用类型。
+            let result=this.myresume  // result 是引用类型。
             if(reg.test(key)){
                 key=key.replace(reg,function(match,number){
                     return '.'+number;
@@ -103,16 +88,16 @@ Vue.component('resume',{
             }
         },
         addSkill(){
-            this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
+            this.myresume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
         },
         removeSkill(index){
-            this.resume.skills.splice(index,1)
+            this.myresume.skills.splice(index,1)
         },
         removeProject(index){
-            this.resume.projects.splice(index,1)
+            this.myresume.projects.splice(index,1)
         },
         addProject(){
-            this.resume.projects.push({name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目名称'})
-        },
-    }
+            this.myresume.projects.push({name:'请填写项目名称',link:'http://...',keywords:'请添加关键词',description:'请填写项目名称'})
+        }
+    },
 })

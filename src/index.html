@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="css/print.css" media="print">
 </head>
 <body>
-<div class="page" id="app">
-    {{resume}}
-    <aside v-show="mode==='edit'">
+<div class="page" id="app"><aside v-show="mode==='edit'">
         <div class="upper">
             <ul class="action">
                 <li><button @click="onClickSave" class="button">保存</button></li>
@@ -26,11 +24,11 @@
             <button v-else @click="showLogin()" class="button">登录</button>
         </div>
     </aside>
-    <resume @edit="onEdit" @updateResume="updateResume" v-bind:myresume="displayResume" :mode="mode" :current-user="currentUser"></resume>
+    <resume v-bind:myresume="displayResume" :mode="mode" :current-user="currentUser" v-cloak></resume>
     <login-dialog @login="login" @goto-sign-up-dialog="gotoSignUpDialog" @close-login-dialog="loginVisible=false;" v-show="loginVisible" v-cloak ></login-dialog>
     <sign-up-dialog @login="login" @goto-login-dialog="gotoLoginDialog" @close-sign-up-dialog="signUpVisible=false;" v-show="signUpVisible" v-cloak></sign-up-dialog>
     <share-dialog @close-share-dialog="closeShareDialog" :share-link="shareLink" v-show="shareVisible" class="share" v-cloak></share-dialog>
-    <button class="exitPreview" @click="mode='edit'" v-if="mode==='preview'" v-cloak>退出预览</button>
+    <button class="exitPreview" @click="exitPreview" v-if="mode==='preview'" v-cloak>退出预览</button>
 </div>
 <script src="//at.alicdn.com/t/font_648255_iudnkr9ybck57b9.js"></script>
 <script src="../vendors/av-min.js"></script>
